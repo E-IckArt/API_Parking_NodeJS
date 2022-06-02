@@ -8,6 +8,7 @@ You need to install these on your system first :
 
 -   Node JS
 -   npm (provided with Node JS)
+-   MongoDB
 
 These are the dependencies the project requires :
 
@@ -43,8 +44,8 @@ Deux ressources:
 
 ## BDD
 
-Pas de connexion à une vraie base de données dans un premier temps.
-Utilisation d'un fichier JSON contenant un échantillon de données pour manipuler notre API.
+Utilisation d'un fichier JSON contenant un échantillon de données pour manipuler l'API dans un premier temps.
+La BDD utilisée par la suite est une base de données NoSQL gérée par le système MongoBD.
 
 ## Vérification des routes des requêtes
 
