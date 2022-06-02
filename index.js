@@ -1,9 +1,19 @@
 const express = require('express');
+const parkings = require('./parkings.json');
 const app = express();
 
 const host = 'localhost';
 const port = 8080;
 const path = require('path');
+
+/*
+ * Définition des routes
+ */
+
+// Définition de la route GET/parkings
+app.get('/parkings', (req, res) => {
+    res.status(200).json(parkings);
+});
 
 // Redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
