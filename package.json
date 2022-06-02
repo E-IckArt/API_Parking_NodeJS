@@ -1,5 +1,5 @@
 {
-    "name": "nodejs_api",
+    "name": "api_parking_nodejs",
     "version": "1.0.0",
     "description": "Tutoriel [practicalprogramming.fr]('https://practicalprogramming.fr/node-js-api/')",
     "main": "index.js",
