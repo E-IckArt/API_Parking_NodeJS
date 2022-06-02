@@ -8,12 +8,14 @@ You need to install these on your system first :
 
 -   Node JS
 -   npm (provided with Node JS)
--   MongoDB
+-   MongoDB (you can also use cloud applicationMongoDB atlas)
 
 These are the dependencies the project requires :
 
 -   Express
 -   Nodemon
+-   MongoDB
+-   Mongoose
 
 Take a look at package.json file for versions of dependencies I have worked with.
 
