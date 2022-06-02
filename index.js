@@ -94,7 +94,12 @@ app.get('/parkings/:id/reservations/:idReservation', (req, res) => {
 
 // Définition de la route POST/parkings/:id/reservations
 app.post('/parkings/:id/reservations', (req, res) => {
-    reservations.push(req.body);
+    //Vérifie si le parking existe
+    if (req.body.parkingId > parkings.length) {
+        console.error(`Le parking ${req.body.parkingId} n'existe pas.`);
+    } else {
+        reservations.push(req.body);
+    }
     res.status(200).json(reservations);
 });
 
@@ -133,6 +138,36 @@ app.put('/reservations/:idReservation', (req, res) => {
         (reservation.checkin = req.body.checkin),
         (reservation.checkout = req.body.checkout),
         res.status(200).json(reservation);
+});
+
+// Définition de la route DELETE/parkings/:id/reservations/:idReservation
+app.delete('/parkings/:id/reservations/:idReservation', (req, res) => {
+    const idParking = parseInt(req.params.id);
+    const idReservation = parseInt(req.params.idReservation);
+    const reservation = reservations.find(
+        (reservation) =>
+            reservation.parkingId === idParking &&
+            reservation.id === idReservation
+    );
+    if (
+        reservation.parkingId !== idParking &&
+        reservation.id !== idReservation
+    ) {
+        console.error('Suppression non autorisée');
+    } else {
+        reservations.splice(reservations.indexOf(reservation), 1);
+    }
+    res.status(200).json(reservations);
+});
+
+// Définition de la route DELETE/reservations/:idReservation
+app.delete('/reservations/:idReservation', (req, res) => {
+    const idReservation = parseInt(req.params.idReservation);
+    const reservation = reservations.find(
+        (reservation) => reservation.id === idReservation
+    );
+    reservations.splice(reservations.indexOf(reservation), 1);
+    res.status(200).json(reservations);
 });
 
 // Ajout du middleware de redirection vers la page index.html
