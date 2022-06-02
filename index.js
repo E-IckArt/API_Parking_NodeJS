@@ -5,8 +5,43 @@ const parkings = require('./parkings.json');
 const reservations = require('./reservations.json');
 const path = require('path');
 
+// Import du module dotenv
+const dotenv = require('dotenv');
+dotenv.config();
+// const { default: mongoose } = require('mongoose');
+
+// Import du module mongoose et connexion à la DB
+// const mongoose = require('mongoose');
+// mongoose
+//     .connect(process.env.MONGO_URI, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//     })
+//     .then(() => console.log('Connexion à MongoDB réussie !'))
+//     .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+// Import du module mongoose et connexion à la DB
+const mongoose = require('mongoose');
+// Database Name
+const dbName = 'parkingApi';
+
+async function main() {
+    // Use connect method to connect to the server
+    await mongoose
+        .connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+        .then(() => console.log('Connexion à MongoDB réussie !'))
+        .catch(() => console.error('Connexion à MongoDB échouée !'));
+
+    // const db = client.db(dbName);
+}
+main();
+// .finally(() => mongoose.close());
+
 // Ajout du middleware de redirection vers la page index.html
-app.use(express.static(path.join(__dirname, 'public')));
+const url = app.use(express.static(path.join(__dirname, 'public')));
 
 // Ajout du Middleware pour récupérer les données et et interpréter le body passés dans la requête POST
 app.use(express.json());
