@@ -72,6 +72,17 @@ app.get('/parkings/:id/reservations', (req, res) => {
     res.status(200).json(reservation);
 });
 
+// Définition de la route GET/parkings/:id/reservations/:idReservation
+app.get('/parkings/:id/reservations/:idReservation', (req, res) => {
+    const id = parseInt(req.params.id);
+    const idReservation = parseInt(req.params.idReservation);
+    const reservation = reservations.find(
+        (reservation) =>
+            reservation.parkingId === id && reservation.id === idReservation
+    );
+    res.status(200).json(reservation);
+});
+
 // Ajout du middleware de redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
