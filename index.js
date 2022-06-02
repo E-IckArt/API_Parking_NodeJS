@@ -5,9 +5,8 @@ const parkings = require('./parkings.json');
 const reservations = require('./reservations.json');
 const path = require('path');
 
-// Définition des variables
-const host = 'localhost';
-const port = 8080;
+// Ajout du middleware de redirection vers la page index.html
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Ajout du Middleware pour récupérer les données et et interpréter le body passés dans la requête POST
 app.use(express.json());
@@ -170,10 +169,4 @@ app.delete('/reservations/:idReservation', (req, res) => {
     res.status(200).json(reservations);
 });
 
-// Ajout du middleware de redirection vers la page index.html
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Server setup
-app.listen(port, host, () => {
-    console.log(`Serveur is running on http://${host}:${port}`);
-});
+module.exports = app;
