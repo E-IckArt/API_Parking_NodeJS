@@ -40,9 +40,16 @@ app.patch('/parkings/:id', (req, res) => {
     (parking.name = req.body.name),
         (parking.city = req.body.city),
         (parking.type = req.body.type),
-        res.status(200).json(parking);
+        res.status(200).json(parkings);
 });
 
+// Définition de la route DELETE/parkings/:id
+app.delete('/parkings/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    let parking = parkings.find((parking) => parking.id === id);
+    parkings.splice(parkings.indexOf(parking), 1);
+    res.status(200).json(parkings);
+});
 // Ajout du middleware de redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
