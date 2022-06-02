@@ -1,7 +1,7 @@
 // Appel des modules
 const express = require('express');
-const parkings = require('./parkings.json');
 const app = express();
+const parkings = require('./parkings.json');
 const path = require('path');
 
 // Définition des variables
@@ -27,7 +27,11 @@ app.get('/parkings/:id', (req, res) => {
     res.status(200).json(parking);
 });
 
-// Définition de la route POST/parking
+// Définition de la route POST/parkings (fonctionnement vérifié avec POSTMAN)
+app.post('/parkings', (req, res) => {
+    parkings.push(req.body);
+    res.status(200).json(parkings);
+});
 
 // Ajout du middleware de redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
