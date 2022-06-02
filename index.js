@@ -63,6 +63,15 @@ app.get('/reservations', (req, res) => {
     res.status(200).json(reservations);
 });
 
+// Définition de la route GET/reservations/:idReservation
+app.get('/reservations/:idReservation', (req, res) => {
+    const idReservation = parseInt(req.params.idReservation);
+    const reservation = reservations.find(
+        (reservation) => reservation.id === idReservation
+    );
+    res.status(200).json(reservation);
+});
+
 // Définition de la route GET/parkings/:id/reservations
 app.get('/parkings/:id/reservations', (req, res) => {
     const id = parseInt(req.params.id);
@@ -81,6 +90,49 @@ app.get('/parkings/:id/reservations/:idReservation', (req, res) => {
             reservation.parkingId === id && reservation.id === idReservation
     );
     res.status(200).json(reservation);
+});
+
+// Définition de la route POST/parkings/:id/reservations
+app.post('/parkings/:id/reservations', (req, res) => {
+    reservations.push(req.body);
+    res.status(200).json(reservations);
+});
+
+// Définition de la route PUT/parkings/:id/reservations/:idReservation (modification sur le même parking)
+app.put('/parkings/:id/reservations/:idReservation', (req, res) => {
+    const idParking = parseInt(req.params.id);
+    const idReservation = parseInt(req.params.idReservation);
+    const reservation = reservations.find(
+        (reservation) =>
+            reservation.parkingId === idParking &&
+            reservation.id === idReservation
+    );
+    (reservation.parking = `Parking ${idParking}`),
+        (reservation.parkingId = idParking),
+        (reservation.city = req.body.city),
+        (reservation.clientName = req.body.clientName),
+        (reservation.vehicle = req.body.vehicle),
+        (reservation.licensePlate = req.body.licensePlate),
+        (reservation.checkin = req.body.checkin),
+        (reservation.checkout = req.body.checkout),
+        res.status(200).json(reservation);
+});
+
+// Définition de la route PUT/reservations/:idReservation (pour pouvoir transférer reservation vers un autre parking lors de la modification)
+app.put('/reservations/:idReservation', (req, res) => {
+    const idReservation = parseInt(req.params.idReservation);
+    const reservation = reservations.find(
+        (reservation) => reservation.id === idReservation
+    );
+    (reservation.parking = req.body.parking),
+        (reservation.parkingId = req.body.parkingId),
+        (reservation.city = req.body.city),
+        (reservation.clientName = req.body.clientName),
+        (reservation.vehicle = req.body.vehicle),
+        (reservation.licensePlate = req.body.licensePlate),
+        (reservation.checkin = req.body.checkin),
+        (reservation.checkout = req.body.checkout),
+        res.status(200).json(reservation);
 });
 
 // Ajout du middleware de redirection vers la page index.html
