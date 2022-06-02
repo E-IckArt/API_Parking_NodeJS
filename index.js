@@ -25,20 +25,21 @@ const mongoose = require('mongoose');
 // Database Name
 const dbName = 'parkingApi';
 
-async function main() {
+async function connectToDB() {
     // Use connect method to connect to the server
-    await mongoose
-        .connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-        .then(() => console.log('Connexion à MongoDB réussie !'))
-        .catch(() => console.error('Connexion à MongoDB échouée !'));
-
-    // const db = client.db(dbName);
+    try {
+        await mongoose
+            .connect(process.env.MONGO_URI, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            })
+            .then(() => console.log('Connexion à MongoDB réussie !'));
+    } catch (error) {
+        handleError(error);
+        console.error('Connexion à MongoDB échouée !');
+    }
 }
-main();
-// .finally(() => mongoose.close());
+connectToDB();
 
 // Ajout du middleware de redirection vers la page index.html
 const url = app.use(express.static(path.join(__dirname, 'public')));
