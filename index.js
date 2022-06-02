@@ -1,10 +1,15 @@
+// Appel des modules
 const express = require('express');
 const parkings = require('./parkings.json');
 const app = express();
+const path = require('path');
 
+// Définition des variables
 const host = 'localhost';
 const port = 8080;
-const path = require('path');
+
+// Ajout du Middleware pour récupérer les données et et interpréter le body passés dans la requête POST
+app.use(express.json());
 
 /*
  * Définition des routes
@@ -22,7 +27,9 @@ app.get('/parkings/:id', (req, res) => {
     res.status(200).json(parking);
 });
 
-// Redirection vers la page index.html
+// Définition de la route POST/parking
+
+// Ajout du middleware de redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Server setup
