@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const parkings = require('./parkings.json');
+const reservations = require('./reservations.json');
 const path = require('path');
 
 // Définition des variables
@@ -12,7 +13,7 @@ const port = 8080;
 app.use(express.json());
 
 /*
- * Définition des routes
+ * Définition des routes pour la ressource PARKING
  */
 
 // Définition de la route GET/parkings
@@ -40,16 +41,37 @@ app.patch('/parkings/:id', (req, res) => {
     (parking.name = req.body.name),
         (parking.city = req.body.city),
         (parking.type = req.body.type),
-        res.status(200).json(parkings);
+        res.status(200).json(parking);
 });
 
-// Définition de la route DELETE/parkings/:id
+// Définition de la route DELETE/parkings/:id (fonctionnement vérifié avec POSTMAN)
 app.delete('/parkings/:id', (req, res) => {
     const id = parseInt(req.params.id);
     let parking = parkings.find((parking) => parking.id === id);
     parkings.splice(parkings.indexOf(parking), 1);
     res.status(200).json(parkings);
 });
+
+/*
+ *
+ * Définition des routes pour la ressource RESERVATION
+ *
+ */
+
+// Définition de la route GET/reservations
+app.get('/reservations', (req, res) => {
+    res.status(200).json(reservations);
+});
+
+// Définition de la route GET/parkings/:id/reservations
+app.get('/parkings/:id/reservations', (req, res) => {
+    const id = parseInt(req.params.id);
+    const reservation = reservations.filter(
+        (reservation) => reservation.parkingId === id
+    );
+    res.status(200).json(reservation);
+});
+
 // Ajout du middleware de redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
