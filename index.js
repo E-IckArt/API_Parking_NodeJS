@@ -15,6 +15,13 @@ app.get('/parkings', (req, res) => {
     res.status(200).json(parkings);
 });
 
+// Définition de la route GET/parkings/:id
+app.get('/parkings/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const parking = parkings.find((parking) => parking.id === id);
+    res.status(200).json(parking);
+});
+
 // Redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
