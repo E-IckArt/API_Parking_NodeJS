@@ -33,6 +33,16 @@ app.post('/parkings', (req, res) => {
     res.status(200).json(parkings);
 });
 
+// Définition de la route PATCH/parkings/:id pour pouvoir mettre à jour les données d'un parking sans modifier l'intégralité du document (fonctionnement vérifié avec POSTMAN)
+app.patch('/parkings/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    let parking = parkings.find((parking) => parking.id === id);
+    (parking.name = req.body.name),
+        (parking.city = req.body.city),
+        (parking.type = req.body.type),
+        res.status(200).json(parking);
+});
+
 // Ajout du middleware de redirection vers la page index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
