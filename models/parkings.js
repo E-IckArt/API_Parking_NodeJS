@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-const { schema } = mongoose;
+const { Schema } = mongoose;
+
+// Création du schéma de données
 const parkingSchema = new Schema({
     id: { type: Number, required: true },
     name: { type: String, required: true },
@@ -7,4 +9,5 @@ const parkingSchema = new Schema({
     city: { type: String, required: true },
 });
 
+// Export du schéma en tant que modèle Mongoose. Le schéma est maintenant disponible dans l'appli Express
 module.exports = mongoose.model('parkings', parkingSchema);
