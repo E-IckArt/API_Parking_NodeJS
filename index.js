@@ -1,32 +1,32 @@
 // Appel des modules
 const express = require('express');
 const app = express();
-const parkings = require('./parkings.json');
-const reservations = require('./reservations.json');
-const path = require('path');
 
-// Import du module dotenv
+const bodyParser = require('body-parser');
+const path = require('path');
+const Parkings = require('./models/Parkings');
+const Reservations = require('./models/reservations');
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Import du module mongoose et connexion à la DB
 const mongoose = require('mongoose');
-// Database Name
-const dbName = 'parkingApi';
 
+// Database Name
+// const dbName = 'parkingApi';
+
+// Connexion à la DB
 async function connectToDB() {
     // Use connect method to connect to the server
-    try {
-        await mongoose
-            .connect(process.env.MONGO_URL, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            })
-            .then(() => console.log('Connexion à MongoDB réussie !'));
-    } catch (error) {
-        handleError(error);
-        console.error('Connexion à MongoDB échouée !');
-    }
+    await mongoose
+        .connect(process.env.MONGO_URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+        .then(() => console.log('Connexion à MongoDB réussie !'))
+        .catch((error) => {
+            handleError(error);
+            console.error('Connexion à MongoDB échouée !');
+        });
 }
 connectToDB();
 
@@ -35,6 +35,25 @@ const url = app.use(express.static(path.join(__dirname, 'public')));
 
 // Ajout du Middleware pour récupérer les données et et interpréter le body passés dans la requête POST
 app.use(express.json());
+
+// Pour éviter les problèmes de CORS - Ces headers permettent :
+app.use((req, res, next) => {
+    // D'accéder à l'API depuis n'importe quelle origine ('*')
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // d'ajouter les headers mentionnés aux requêtes envoyées vers notre API (Origin , X-Requested-With , etc.) ;
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
+    );
+    // d'envoyer des requêtes avec les méthodes mentionnées ( GET ,POST , etc.)
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+    );
+    next();
+});
+
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World');
@@ -46,39 +65,45 @@ app.get('/', (req, res) => {
  */
 
 // Définition de la route GET/parkings
-app.get('/parkings', (req, res) => {
-    res.status(200).json(parkings);
+app.get('/parkings', (req, res, next) => {
+    Parkings.find()
+        .then((parkings) => res.status(200).json(parkings))
+        .catch((error) => res.status(400).json({ error }));
 });
 
 // Définition de la route GET/parkings/:id
 app.get('/parkings/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const parking = parkings.find((parking) => parking.id === id);
-    res.status(200).json(parking);
+    const idParking = parseInt(req.params.id);
+    Parkings.findOne({ id: idParking })
+        .then((parking) => res.status(200).json(parking))
+        .catch((error) => res.status(404).json({ error }));
 });
 
 // Définition de la route POST/parkings (fonctionnement vérifié avec POSTMAN)
-app.post('/parkings', (req, res) => {
-    parkings.push(req.body);
-    res.status(200).json(parkings);
+app.post('/parkings', (req, res, next) => {
+    delete req.body._id;
+    const parking = new Parkings({
+        ...req.body,
+    });
+    parking
+        .save()
+        .then(() => res.status(201).json({ message: `Parking enregistré !` }))
+        .catch((error) => res.status(400).json({ error }));
 });
 
 // Définition de la route PATCH/parkings/:id pour pouvoir mettre à jour les données d'un parking sans modifier l'intégralité du document (fonctionnement vérifié avec POSTMAN)
-app.patch('/parkings/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    let parking = parkings.find((parking) => parking.id === id);
-    (parking.name = req.body.name),
-        (parking.city = req.body.city),
-        (parking.type = req.body.type),
-        res.status(200).json(parking);
+app.put('/parkings/:id', (req, res) => {
+    const idParking = parseInt(req.params.id);
+    Parkings.updateOne({ id: idParking }, { ...req.body })
+        .then(() => res.status(200).json({ message: 'Parking modifié !' }))
+        .catch((error) => res.status(400).json({ error }));
 });
 
 // Définition de la route DELETE/parkings/:id (fonctionnement vérifié avec POSTMAN)
 app.delete('/parkings/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    let parking = parkings.find((parking) => parking.id === id);
-    parkings.splice(parkings.indexOf(parking), 1);
-    res.status(200).json(parkings);
+    Parkings.deleteOne({ id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Parking supprimé !' }))
+        .catch((error) => res.status(400).json({ error }));
 });
 
 /*
@@ -89,114 +114,119 @@ app.delete('/parkings/:id', (req, res) => {
 
 // Définition de la route GET/reservations
 app.get('/reservations', (req, res) => {
-    res.status(200).json(reservations);
+    Reservations.find()
+        .then((reservations) => res.status(200).json(reservations))
+        .catch((error) => res.status(400).json({ error }));
 });
 
 // Définition de la route GET/reservations/:idReservation
 app.get('/reservations/:idReservation', (req, res) => {
     const idReservation = parseInt(req.params.idReservation);
-    const reservation = reservations.find(
-        (reservation) => reservation.id === idReservation
-    );
-    res.status(200).json(reservation);
+    Reservations.findOne({ id: idReservation })
+        .then((reservation) => res.status(200).json(reservation))
+        .catch((error) => res.status(404).json({ error }));
 });
 
 // Définition de la route GET/parkings/:id/reservations
 app.get('/parkings/:id/reservations', (req, res) => {
-    const id = parseInt(req.params.id);
-    const reservation = reservations.filter(
-        (reservation) => reservation.parkingId === id
-    );
-    res.status(200).json(reservation);
+    const idParking = parseInt(req.params.id);
+    Reservations.find()
+        .where({ parkingId: idParking })
+        .then((reservations) => res.status(200).json(reservations))
+        .catch((error) => res.status(404).json({ error }));
 });
 
 // Définition de la route GET/parkings/:id/reservations/:idReservation
 app.get('/parkings/:id/reservations/:idReservation', (req, res) => {
-    const id = parseInt(req.params.id);
+    const idParking = parseInt(req.params.id);
     const idReservation = parseInt(req.params.idReservation);
-    const reservation = reservations.find(
-        (reservation) =>
-            reservation.parkingId === id && reservation.id === idReservation
-    );
-    res.status(200).json(reservation);
+    Reservations.findOne({ parkingId: idParking } && { id: idReservation })
+        .then((reservation) => res.status(200).json(reservation))
+        .catch((error) => res.status(404).json({ error }));
+});
+
+// Définition de la route POST/reservations
+// TODO - Trouver comment vérifier si le parking réservé existe
+app.post('/reservations', (req, res) => {
+    const reservation = new Reservations({
+        ...req.body,
+    });
+    reservation
+        .save()
+        .then(() =>
+            res.status(201).json({ message: `Réservation enregistrée !` })
+        )
+        .catch((error) => res.status(400).json({ error }));
 });
 
 // Définition de la route POST/parkings/:id/reservations
 app.post('/parkings/:id/reservations', (req, res) => {
-    //Vérifie si le parking existe
-    if (req.body.parkingId > parkings.length) {
-        console.error(`Le parking ${req.body.parkingId} n'existe pas.`);
-    } else {
-        reservations.push(req.body);
-    }
-    res.status(200).json(reservations);
+    const reservation = new Reservations({
+        ...req.body,
+        parkingId: req.params.id,
+        parking: `Parking ${req.params.id}`,
+    });
+    reservation
+        .save()
+        .then(() =>
+            res.status(201).json({ message: `Réservation enregistrée !` })
+        )
+        .catch((error) => res.status(400).json({ error }));
 });
 
 // Définition de la route PUT/parkings/:id/reservations/:idReservation (modification sur le même parking)
 app.put('/parkings/:id/reservations/:idReservation', (req, res) => {
-    const idParking = parseInt(req.params.id);
     const idReservation = parseInt(req.params.idReservation);
-    const reservation = reservations.find(
-        (reservation) =>
-            reservation.parkingId === idParking &&
-            reservation.id === idReservation
-    );
-    (reservation.parking = `Parking ${idParking}`),
-        (reservation.parkingId = idParking),
-        (reservation.city = req.body.city),
-        (reservation.clientName = req.body.clientName),
-        (reservation.vehicle = req.body.vehicle),
-        (reservation.licensePlate = req.body.licensePlate),
-        (reservation.checkin = req.body.checkin),
-        (reservation.checkout = req.body.checkout),
-        res.status(200).json(reservation);
+    Reservations.updateOne({
+        ...req.body,
+        id: idReservation,
+        parkingId: req.params.id,
+        parking: `Parking ${req.params.id}`,
+    })
+        .then(() => res.status(200).json({ message: 'Réservation modifiée !' }))
+        .catch((error) => res.status(404).json({ error }));
 });
 
 // Définition de la route PUT/reservations/:idReservation (pour pouvoir transférer reservation vers un autre parking lors de la modification)
 app.put('/reservations/:idReservation', (req, res) => {
     const idReservation = parseInt(req.params.idReservation);
-    const reservation = reservations.find(
-        (reservation) => reservation.id === idReservation
-    );
-    (reservation.parking = req.body.parking),
-        (reservation.parkingId = req.body.parkingId),
-        (reservation.city = req.body.city),
-        (reservation.clientName = req.body.clientName),
-        (reservation.vehicle = req.body.vehicle),
-        (reservation.licensePlate = req.body.licensePlate),
-        (reservation.checkin = req.body.checkin),
-        (reservation.checkout = req.body.checkout),
-        res.status(200).json(reservation);
+    Reservations.updateOne({
+        ...req.body,
+        id: idReservation,
+    })
+        .then(() => res.status(200).json({ message: 'Réservation modifiée !' }))
+        .catch((error) => res.status(404).json({ error }));
 });
 
 // Définition de la route DELETE/parkings/:id/reservations/:idReservation
 app.delete('/parkings/:id/reservations/:idReservation', (req, res) => {
     const idParking = parseInt(req.params.id);
     const idReservation = parseInt(req.params.idReservation);
-    const reservation = reservations.find(
-        (reservation) =>
-            reservation.parkingId === idParking &&
-            reservation.id === idReservation
-    );
-    if (
-        reservation.parkingId !== idParking &&
-        reservation.id !== idReservation
-    ) {
-        console.error('Suppression non autorisée');
+    if (req.body.parkingId !== idParking || req.body.id !== idReservation) {
+        console.error(
+            "La suppression de cette réservation n'est pas autorisée. "
+        );
     } else {
-        reservations.splice(reservations.indexOf(reservation), 1);
+        Reservations.deleteOne({ id: req.params.id })
+            .then(() =>
+                res.status(200).json({ message: 'Réservation supprimée !' })
+            )
+            .catch((error) => res.status(400).json({ error }));
     }
-    res.status(200).json(reservations);
 });
 
 // Définition de la route DELETE/reservations/:idReservation
 app.delete('/reservations/:idReservation', (req, res) => {
     const idReservation = parseInt(req.params.idReservation);
-    const reservation = reservations.find(
-        (reservation) => reservation.id === idReservation
-    );
-    reservations.splice(reservations.indexOf(reservation), 1);
-    res.status(200).json(reservations);
+    if (req.body.id !== idReservation) {
+        res.status(200).json({ message: 'Suppression non autorisée !' });
+    } else {
+        Reservations.deleteOne({ id: req.params.id })
+            .then(() =>
+                res.status(200).json({ message: 'Réservation supprimée !' })
+            )
+            .catch((error) => res.status(400).json({ error }));
+    }
 });
 
 module.exports = app;
