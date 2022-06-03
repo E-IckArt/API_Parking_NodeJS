@@ -46,7 +46,8 @@ Deux ressources:
 
 ## BDD
 
-Utilisation d'un fichier JSON contenant un échantillon de données pour manipuler l'API dans un premier temps.
+Utilisation de deux fichiers JSON contenant un échantillon de données pour manipuler l'API dans un premier temps.
+Cette version est disponible sur la branche *`save_CRUD_with_json_files`*.
 La BDD utilisée par la suite est une base de données NoSQL gérée par le système MongoBD.
 
 ## Vérification des routes des requêtes
