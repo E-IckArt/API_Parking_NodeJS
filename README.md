@@ -8,11 +8,14 @@ You need to install these on your system first :
 
 -   Node JS
 -   npm (provided with Node JS)
+-   MongoDB (you can also use cloud applicationMongoDB atlas)
 
 These are the dependencies the project requires :
 
 -   Express
 -   Nodemon
+-   MongoDB
+-   Mongoose
 
 Take a look at package.json file for versions of dependencies I have worked with.
 
@@ -43,8 +46,9 @@ Deux ressources:
 
 ## BDD
 
-Pas de connexion à une vraie base de données dans un premier temps.
-Utilisation d'un fichier JSON contenant un échantillon de données pour manipuler notre API.
+Utilisation de deux fichiers JSON contenant un échantillon de données pour manipuler l'API dans un premier temps.
+Cette version est disponible sur la branche _`save_CRUD_with_json_files`_.
+La BDD utilisée par la suite est une base de données NoSQL gérée par le système MongoBD.
 
 ## Vérification des routes des requêtes
 
