@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-const { schema } = mongoose;
+const { Schema } = mongoose;
+
+// Création du schéma de données
 const reservationSchema = new Schema({
     id: { type: Number, required: true },
     parking: { type: String, required: true },
@@ -11,4 +13,5 @@ const reservationSchema = new Schema({
     checkout: { type: Date, required: true },
 });
 
+// Export du schéma en tant que modèle Mongoose. Le schéma est maintenant disponible dans l'appli Express
 module.exports = mongoose.model('reservations', reservationSchema);
