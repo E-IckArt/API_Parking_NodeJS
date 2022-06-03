@@ -8,17 +8,6 @@ const path = require('path');
 // Import du module dotenv
 const dotenv = require('dotenv');
 dotenv.config();
-// const { default: mongoose } = require('mongoose');
-
-// Import du module mongoose et connexion à la DB
-// const mongoose = require('mongoose');
-// mongoose
-//     .connect(process.env.MONGO_URI, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//     })
-//     .then(() => console.log('Connexion à MongoDB réussie !'))
-//     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 // Import du module mongoose et connexion à la DB
 const mongoose = require('mongoose');
@@ -29,7 +18,7 @@ async function connectToDB() {
     // Use connect method to connect to the server
     try {
         await mongoose
-            .connect(process.env.MONGO_URI, {
+            .connect(process.env.MONGO_URL, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             })
@@ -46,6 +35,11 @@ const url = app.use(express.static(path.join(__dirname, 'public')));
 
 // Ajout du Middleware pour récupérer les données et et interpréter le body passés dans la requête POST
 app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.send('Hello World');
+    res.status(200);
+});
 
 /*
  * Définition des routes pour la ressource PARKING
