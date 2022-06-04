@@ -24,7 +24,7 @@ router.get('/:id', (req, res, next) => {
         .catch((error) => res.status(404).json({ error }));
 });
 
-// Définition de la route POST/parkings (fonctionnement vérifié avec POSTMAN)
+// Définition de la route POST/parkings
 router.post('/', (req, res, next) => {
     delete req.body._id;
     const parking = new Parkings({
@@ -36,7 +36,7 @@ router.post('/', (req, res, next) => {
         .catch((error) => res.status(400).json({ error }));
 });
 
-// Définition de la route PUT/parkings/:id pour pouvoir mettre à jour les données d'un parking sans modifier l'intégralité du document (fonctionnement vérifié avec POSTMAN)
+// Définition de la route PUT/parkings/:id
 router.put('/:id', (req, res, next) => {
     const idParking = parseInt(req.params.id);
     Parkings.updateOne({ id: idParking }, { ...req.body })
@@ -44,7 +44,7 @@ router.put('/:id', (req, res, next) => {
         .catch((error) => res.status(400).json({ error }));
 });
 
-// Définition de la route DELETE/parkings/:id (fonctionnement vérifié avec POSTMAN)
+// Définition de la route DELETE/parkings/:id (
 router.delete('/:id', (req, res, next) => {
     Parkings.deleteOne({ id: req.params.id })
         .then(() => res.status(200).json({ message: 'Parking supprimé !' }))
