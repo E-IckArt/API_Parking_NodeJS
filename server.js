@@ -49,10 +49,10 @@ server.on('listening', () => {
     const address = server.address();
     const bind =
         typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-    console.log('Le serveur écoute le ' + bind);
+    console.log('Server is listening ' + bind);
 });
 
 // Server setup
 server.listen(port, host, () => {
-    console.log(`Serveur is running on http://${host}:${port}`);
+    console.log(`Server is running on http://${host}:${port}`);
 });
