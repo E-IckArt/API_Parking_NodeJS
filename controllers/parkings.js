@@ -28,8 +28,10 @@ exports.createParking = (req, res, next) => {
 };
 
 exports.modifyParking = (req, res, next) => {
-    const idParking = parseInt(req.params.id);
-    Parkings.updateOne({ id: idParking }, { ...req.body })
+    const parking = new Parkings({
+        ...req.body,
+    });
+    Parkings.updateOne({ id: req.params.id }, parking)
         .then(() => res.status(200).json({ message: 'Parking modifié !' }))
         .catch((error) => res.status(400).json({ error }));
 };

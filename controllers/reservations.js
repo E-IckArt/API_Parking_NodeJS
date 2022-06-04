@@ -29,25 +29,26 @@ exports.createReservation = (req, res) => {
         .catch((error) => res.status(400).json({ error }));
 };
 
-exports.modifyReservation = (req, res) => {
-    const idReservation = parseInt(req.params.idReservation);
-    Reservations.updateOne({
-        ...req.body,
-        id: idReservation,
-    })
+exports.modifyReservation = (req, res, next) => {
+    const reservation = new Reservations({
+        _id: req.body._id,
+        id: req.params.id,
+        parking: req.body.parking,
+        city: req.body.city,
+        clientName: req.body.clientName,
+        licensePlate: req.body.licensePlate,
+        checkin: req.body.checkin,
+        checkout: req.body.checkout,
+    });
+    Reservations.updateOne({ _id: req.body._id }, reservation)
         .then(() => res.status(200).json({ message: 'Réservation modifiée !' }))
-        .catch((error) => res.status(404).json({ error }));
+        .catch((error) => res.status(400).json({ error }));
 };
 
 exports.deleteReservation = (req, res) => {
-    const idReservation = parseInt(req.params.idReservation);
-    if (req.body.id !== idReservation) {
-        res.status(200).json({ message: 'Suppression non autorisée !' });
-    } else {
-        Reservations.deleteOne({ id: req.params.id })
-            .then(() =>
-                res.status(200).json({ message: 'Réservation supprimée !' })
-            )
-            .catch((error) => res.status(400).json({ error }));
-    }
+    Reservations.deleteOne({ _id: req.body._id }, { id: req.params.id })
+        .then(() =>
+            res.status(200).json({ message: 'Reservation supprimée !' })
+        )
+        .catch((error) => res.status(400).json({ error }));
 };
