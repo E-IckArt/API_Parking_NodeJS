@@ -1,6 +1,6 @@
 # Construire une API REST avec Node JS et Express - API Gestion de parking
 
-Tutoriel [practicalprogramming.fr]('https://practicalprogramming.fr/node-js-api/')
+Idée de départ : Tutoriel [practicalprogramming.fr]('https://practicalprogramming.fr/node-js-api/')
 
 ## Dependancies
 
@@ -16,6 +16,7 @@ These are the dependencies the project requires :
 -   Nodemon
 -   MongoDB
 -   Mongoose
+-   Dotenv
 
 Take a look at package.json file for versions of dependencies I have worked with.
 
@@ -46,11 +47,11 @@ Deux ressources:
 
 ## BDD
 
-Utilisation de deux fichiers JSON contenant un échantillon de données pour manipuler l'API dans un premier temps.
+Dans un premier temps : utilisation de deux fichiers JSON contenant un échantillon de données pour manipuler l'API.
 Cette version est disponible sur la branche _`save_CRUD_with_json_files`_.
-La BDD utilisée par la suite est une base de données NoSQL gérée par le système MongoBD.
+
+Ensuite : création d'une base de données NoSQL gérée par le système MongoBD et connexion à cette DB.
 
 ## Vérification des routes des requêtes
 
-Le fonctionnement des requêtes GET est vérifié dans le navigateur
-Le fonctionnement des requêtes POST, PUT et DELETE est vérifié grâce à l'outil desktop POSTMAN
+Le fonctionnement des requêtes GET POST, PUT et DELETE est vérifié dans le navigateur et grâce à l'outil desktop POSTMAN.
