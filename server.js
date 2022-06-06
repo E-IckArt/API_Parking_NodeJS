@@ -42,17 +42,23 @@ const errorHandler = (error) => {
     }
 };
 
-const server = http.createServer(app);
-
-server.on('error', errorHandler);
-server.on('listening', () => {
+const serverAddress = () => {
     const address = server.address();
     const bind =
         typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
     console.log('Server is listening ' + bind);
-});
+};
+const server = http.createServer(app);
 
 // Server setup
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
-});
+
+try {
+    server.listen(port, host, () => {
+        console.log(`Server is running on http://${host}:${port}`);
+    });
+    server.on('error', errorHandler);
+    server.on('listening', serverAddress);
+} catch (error) {
+    console.error(`Could not run server : ${error}`);
+    process.exit(1);
+}
