@@ -32,7 +32,7 @@ connectToDB();
 // Ajout du middleware de redirection vers la page index.html
 const url = app.use(express.static(path.join(__dirname, 'public')));
 
-// Ajout du Middleware pour récupérer les données et et interpréter le body passés dans la requête POST
+// Ajout du Middleware pour récupérer les données et interpréter le body passé dans la requête POST
 app.use(express.json());
 
 // Pour éviter les problèmes de CORS - Ces headers permettent :
@@ -52,15 +52,11 @@ app.use((req, res, next) => {
     next();
 });
 
+// Ajout du middleware pour prévenir le système que la réponse est attendue au format json
 app.use(bodyParser.json());
 
 app.use('/parkings', parkingsRoutes);
 app.use('/parkings/:id/reservations', reservationsRoutes);
 app.use('/reservations', reservationsRoutes);
-
-app.get('/', (req, res) => {
-    res.send('Hello World');
-    res.status(200);
-});
 
 module.exports = app;
