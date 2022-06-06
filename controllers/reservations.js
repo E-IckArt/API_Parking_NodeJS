@@ -33,10 +33,12 @@ exports.modifyReservation = (req, res, next) => {
     const reservation = new Reservations({
         _id: req.body._id,
         id: req.params.id,
-        parking: req.body.parking,
-        city: req.body.city,
         clientName: req.body.clientName,
+        vehicle: req.body.vehicle,
         licensePlate: req.body.licensePlate,
+        city: req.body.city,
+        parking: req.body.parking,
+        parkingId: req.body.parkingId,
         checkin: req.body.checkin,
         checkout: req.body.checkout,
     });

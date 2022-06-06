@@ -1,69 +1,68 @@
 [
     {
-        "id":1,
-        "parking":"Parking 1",
-        "parkingId": 1,
-        "city": "Paris",
+        "id": 1,
         "clientName": "Thomas Martin",
         "vehicle": "car",
         "licensePlate": "ED432EF",
-        "checkin":"2020-08-21T06:00:00Z",
-        "checkout":"2020-08-27T06:00:00Z"
+        "city": "Paris",
+        "parking": "Parking 1",
+        "parkingId": 1,
+        "checkin": "2020-08-21T06:00:00Z",
+        "checkout": "2020-08-27T06:00:00Z"
     },
     {
-        "id":2,
-        "parking":"Parking 1",
-        "parkingId": 1,
-        "city": "Roissy",
+        "id": 2,
         "clientName": "Frédéric Bertholet",
         "vehicle": "car",
         "licensePlate": "AB213CD",
-        "checkin":"2020-08-20T06:00:00Z",
-        "checkout":"2020-08-27T06:00:00Z"
+        "city": "Roissy",
+        "parking": "Parking 1",
+        "parkingId": 1,
+        "checkin": "2020-08-20T06:00:00Z",
+        "checkout": "2020-08-27T06:00:00Z"
     },
     {
-        "id":3,
-        "parking":"Parking 1",
-        "parkingId": 1,
-        "city": "Roissy",
+        "id": 3,
         "clientName": "Anatole Basthoz",
         "vehicle": "car",
         "licensePlate": "EB123KJ",
-        "checkin":"2020-08-01T06:00:00Z",
-        "checkout":"2020-08-17T06:00:00Z"
-    }
-    ,
+        "city": "Roissy",
+        "parking": "Parking 1",
+        "parkingId": 1,
+        "checkin": "2020-08-01T06:00:00Z",
+        "checkout": "2020-08-17T06:00:00Z"
+    },
     {
-        "id":4,
-        "parking":"Parking 2",
-        "parkingId": 2,
-        "city": "Beauvais",
+        "id": 4,
         "clientName": "Caroline Wattremez",
         "vehicle": "car",
         "licensePlate": "BD198DD",
-        "checkin":"2020-08-21T06:00:00Z",
-        "checkout":"2020-08-27T06:00:00Z"
+        "city": "Beauvais",
+        "parking": "Parking 2",
+        "parkingId": 2,
+        "checkin": "2020-08-21T06:00:00Z",
+        "checkout": "2020-08-27T06:00:00Z"
     },
     {
-        "id":5,
-        "parking":"Parking 3",
-        "parkingId": 3,
-        "city": "Orly",
-        "clientName": "Thomas Martin",
+        "id": 5,
+        "clientName": "Tim Button",
         "vehicle": "car",
-        "licensePlate": "ED432EF",
-        "checkin":"2020-08-28T06:00:00Z",
-        "checkout":"2020-08-29T06:00:00Z"
+        "licensePlate": "8UT70N5",
+        "city": "Orly",
+        "parking": "Parking 3",
+        "parkingId": 3,
+        "checkin": "2020-08-28T06:00:00Z",
+        "checkout": "2020-08-29T06:00:00Z"
     },
     {
-        "id":6,
-        "parking":"Parking 4",
-        "parkingId": 4,
-        "city": "Paris",
+        "id": 6,
         "clientName": "Elena Richardson",
         "vehicle": "car",
         "licensePlate": "KJ233OE",
-        "checkin":"2020-08-12T06:00:00Z",
-        "checkout":"2020-08-17T06:00:00Z"
+        "city": "Paris",
+        "parking": "Parking 4",
+        "parkingId": 4,
+        "checkin": "2020-08-12T06:00:00Z",
+        "checkout": "2020-08-17T06:00:00Z"
     }
 ]
