@@ -29,8 +29,11 @@ async function connectToDB() {
 }
 connectToDB();
 
+app.get('/', (req, res) => {
+    res.json({ message: 'Home, nothing interesting here' });
+});
 // Ajout du middleware de redirection vers la page index.html
-const url = app.use(express.static(path.join(__dirname, 'public')));
+// const url = app.use(express.static(path.join(__dirname, 'public')));
 
 // Ajout du Middleware pour récupérer les données et interpréter le body passé dans la requête POST
 app.use(express.json());
