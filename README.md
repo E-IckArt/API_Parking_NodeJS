@@ -2,6 +2,14 @@
 
 Idée de départ : Tutoriel [practicalprogramming.fr]('https://practicalprogramming.fr/node-js-api/')
 
+## Installation
+
+```
+git clone https://github.com/E-IckArt/API_Parking_NodeJS.git
+cd API_Parking_NodeJS
+npm i
+```
+
 ## Dependancies
 
 You need to install these on your system first :
@@ -19,11 +27,6 @@ These are the dependencies the project requires :
 -   Dotenv
 
 Take a look at package.json file for versions of dependencies I have worked with.
-
-## Dependencies Installation
-
-Open a CLI at the project's root then enter :
-`npm install`
 
 ## Contexte
 
