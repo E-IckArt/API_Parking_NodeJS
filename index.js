@@ -1,59 +1,65 @@
 // Appel des modules
 const express = require('express');
 const app = express();
-const parkings = require('./parkings.json');
+
+const bodyParser = require('body-parser');
 const path = require('path');
 
-// Définition des variables
-const host = 'localhost';
-const port = 8080;
+const dotenv = require('dotenv');
+dotenv.config();
 
-// Ajout du Middleware pour récupérer les données et et interpréter le body passés dans la requête POST
-app.use(express.json());
+const mongoose = require('mongoose');
 
-/*
- * Définition des routes
- */
+const parkingsRoutes = require('./routes/parkings');
+const reservationsRoutes = require('./routes/reservations');
 
-// Définition de la route GET/parkings
-app.get('/parkings', (req, res) => {
-    res.status(200).json(parkings);
-});
+// Connexion à la DB
+async function connectToDB() {
+    // Use connect method to connect to the server
+    await mongoose
+        .connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+        .then(() => console.log('Connexion à MongoDB réussie !'))
+        .catch((error) => {
+            handleError(error);
+            console.error('Connexion à MongoDB échouée !');
+        });
+}
+connectToDB();
 
-// Définition de la route GET/parkings/:id
-app.get('/parkings/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const parking = parkings.find((parking) => parking.id === id);
-    res.status(200).json(parking);
-});
-
-// Définition de la route POST/parkings (fonctionnement vérifié avec POSTMAN)
-app.post('/parkings', (req, res) => {
-    parkings.push(req.body);
-    res.status(200).json(parkings);
-});
-
-// Définition de la route PATCH/parkings/:id pour pouvoir mettre à jour les données d'un parking sans modifier l'intégralité du document (fonctionnement vérifié avec POSTMAN)
-app.patch('/parkings/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    let parking = parkings.find((parking) => parking.id === id);
-    (parking.name = req.body.name),
-        (parking.city = req.body.city),
-        (parking.type = req.body.type),
-        res.status(200).json(parkings);
-});
-
-// Définition de la route DELETE/parkings/:id
-app.delete('/parkings/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    let parking = parkings.find((parking) => parking.id === id);
-    parkings.splice(parkings.indexOf(parking), 1);
-    res.status(200).json(parkings);
+app.get('/', (req, res) => {
+    res.json({ message: 'Home, nothing interesting here' });
 });
 // Ajout du middleware de redirection vers la page index.html
-app.use(express.static(path.join(__dirname, 'public')));
+// const url = app.use(express.static(path.join(__dirname, 'public')));
 
-// Server setup
-app.listen(port, host, () => {
-    console.log(`Serveur is running on http://${host}:${port}`);
+// Ajout du Middleware pour récupérer les données et interpréter le body passé dans la requête POST
+app.use(express.json());
+
+// Pour éviter les problèmes de CORS - Ces headers permettent :
+app.use((req, res, next) => {
+    // d'accéder à l'API depuis n'importe quelle origine ('*')
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // d'ajouter les headers mentionnés aux requêtes envoyées vers notre API (Origin , X-Requested-With , etc.) ;
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
+    );
+    // d'envoyer des requêtes avec les méthodes mentionnées ( GET ,POST , etc.)
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+    );
+    next();
 });
+
+// Ajout du middleware pour prévenir le système que la réponse est attendue au format json
+app.use(bodyParser.json());
+
+app.use('/parkings', parkingsRoutes);
+app.use('/parkings/:id/reservations', reservationsRoutes); // Cette route n'est pas créée
+app.use('/reservations', reservationsRoutes);
+
+module.exports = app;

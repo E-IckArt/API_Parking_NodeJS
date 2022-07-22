@@ -1,6 +1,14 @@
 # Construire une API REST avec Node JS et Express - API Gestion de parking
 
-Tutoriel [practicalprogramming.fr]('https://practicalprogramming.fr/node-js-api/')
+Idée de départ : Tutoriel [practicalprogramming.fr]('https://practicalprogramming.fr/node-js-api/')
+
+## Installation
+
+```
+git clone https://github.com/E-IckArt/API_Parking_NodeJS.git
+cd API_Parking_NodeJS
+npm i
+```
 
 ## Dependancies
 
@@ -16,13 +24,12 @@ These are the dependencies the project requires :
 -   Nodemon
 -   MongoDB
 -   Mongoose
+    <<<<<<< HEAD
+    =======
+-   Dotenv
+    > > > > > > > V3.0
 
 Take a look at package.json file for versions of dependencies I have worked with.
-
-## Dependencies Installation
-
-Open a CLI at the project's root then enter :
-`npm install`
 
 ## Contexte
 
@@ -46,11 +53,11 @@ Deux ressources:
 
 ## BDD
 
-Utilisation de deux fichiers JSON contenant un échantillon de données pour manipuler l'API dans un premier temps.
-Cette version est disponible sur la branche *`save_CRUD_with_json_files`*.
-La BDD utilisée par la suite est une base de données NoSQL gérée par le système MongoBD.
+Dans un premier temps : utilisation de deux fichiers JSON contenant un échantillon de données pour manipuler l'API.
+Cette version est disponible sur la branche _`save_CRUD_with_json_files`_.
+
+Ensuite : création d'une base de données NoSQL gérée par le système MongoBD et connexion à cette DB.
 
 ## Vérification des routes des requêtes
 
-Le fonctionnement des requêtes GET est vérifié dans le navigateur
-Le fonctionnement des requêtes POST, PUT et DELETE est vérifié grâce à l'outil desktop POSTMAN
+Le fonctionnement des requêtes GET POST, PUT et DELETE est vérifié dans le navigateur et grâce à l'outil desktop POSTMAN.
