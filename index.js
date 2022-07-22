@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.use('/parkings', parkingsRoutes);
-app.use('/parkings/:id/reservations', reservationsRoutes);
+app.use('/parkings/:id/reservations', reservationsRoutes); // Cette route n'est pas créée
 app.use('/reservations', reservationsRoutes);
 
 module.exports = app;
